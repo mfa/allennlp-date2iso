@@ -98,15 +98,25 @@ def create_dataset(dataset_name, n_examples, all_languages):
 @click.option("--train-size", "-t", default=500000)
 @click.option("--validation-size", "-v", default=1000)
 @click.option("--all/--no-all", "all_languages", default=False)
-def main(train_size, validation_size, all_languages):
-    click.echo("creating dataset")
+@click.option("--overwrite/--no-overwrite", default=False)
+def main(train_size, validation_size, all_languages, overwrite):
     suffix = "_all" if all_languages else ""
+    train_filename = DATA_FOLDER / f"training_{train_size}{suffix}.csv"
+    validation_filename = DATA_FOLDER / f"validation_{validation_size}{suffix}.csv"
 
+    if not overwrite:
+        if train_filename.exists():
+            click.echo(f"{train_filename} exists.")
+        if validation_filename.exists():
+            click.echo(f"{validation_filename} exists.")
+        if train_filename.exists() or validation_filename.exists():
+            return
+
+    click.echo("creating dataset")
+
+    create_dataset(train_filename, train_size, all_languages)
     create_dataset(
-        DATA_FOLDER / f"training_{train_size}{suffix}.csv", train_size, all_languages
-    )
-    create_dataset(
-        DATA_FOLDER / f"validation_{validation_size}{suffix}.csv",
+        validation_filename,
         validation_size,
         all_languages,
     )
