@@ -1,0 +1,6 @@
+allennlp-models==2.7.0
+babel
+click
+Faker
+tqdm
+wandb-allennlp==0.3.0

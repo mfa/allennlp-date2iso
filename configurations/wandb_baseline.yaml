@@ -1,0 +1,33 @@
+---
+name: date2iso-baseline
+project: date2iso
+program: allennlp
+method: grid
+command:
+  - ${program}
+  - "train-with-wandb"
+  - "configurations/baseline__wandb.json"
+  - "--include-package=library"
+  - "--include-package=allennlp_models"
+  - ${args}
+metric:
+  name: best_validation_accuracy
+  goal: maximize
+parameters:
+  model.seq2vec_encoder.num_layers:
+    values:
+      - 1
+      - 2
+  model.seq2vec_encoder.hidden_size:
+    values:
+      - 10
+      - 50
+      - 70
+      - 100
+  data_loader.batch_size:
+    values:
+      - 32
+      - 64
+      - 128
+  trainer.cuda_device:
+    value: 0
