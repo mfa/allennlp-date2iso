@@ -3,8 +3,10 @@
     "type": "seq2seq",
     "source_add_start_token": false,
     "source_add_end_token": false,
-    "target_add_start_token": false,
-    "target_add_end_token": false,
+    "target_add_start_token": true,
+    "target_add_end_token": true,
+    "start_symbol": "@",
+    "end_symbol": " ",
     "source_tokenizer": {
       "type": "character"
     },
