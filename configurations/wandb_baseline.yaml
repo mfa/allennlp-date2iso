@@ -26,8 +26,7 @@ parameters:
       - 100
   data_loader.batch_size:
     values:
-      - 32
-      - 64
       - 128
+      - 512
   trainer.cuda_device:
     value: 0
