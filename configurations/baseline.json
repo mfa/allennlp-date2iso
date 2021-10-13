@@ -62,6 +62,12 @@
   "trainer": {
     "cuda_device": -1,
     "num_epochs": 1,
+    "callbacks": [
+      {
+        "type": "console_logger",
+        "should_log_inputs": false
+      }
+    ],
     "optimizer": {
       "type": "adam"
     },

@@ -62,6 +62,10 @@
         "type": "wandb_allennlp",
         "files_to_save": ["config.json"],
         "files_to_save_at_end": ["*.tar.gz"]
+      },
+      {
+        "type": "console_logger",
+        "should_log_inputs": false
       }
     ],
     "optimizer": {
