@@ -1,0 +1,15 @@
+---
+version: "2.4"
+services:
+  main:
+    build:
+      context: .
+      args:
+        REGISTRY: "docker.io"
+    command: "/start-reload.sh"
+    environment:
+      PYTHONUNBUFFERED: 0
+    volumes:
+      - ./app:/app
+    ports:
+      - "8021:8000"

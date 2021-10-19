@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Convert dates to iso8601</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Convert dates to iso8601
+      </h1>
+      <p>
+        <form autocomplete="off">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <select id="examples">
+                      <option>Choose example</option>
+                      <option>1/5/2016</option>
+                      <option>January 5 2016</option>
+                      <option>5. Januar 2016</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column has-text-right" id="link">
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input id="input_date" class="input" type="text" placeholder="Insert Date here"{% if i %} value="{{ i }}"{% endif %}>
+                  <p id="seed-error" class="help">Trained on English, German and Spanish.</p>
+                </div>
+                <div class="control">
+                  <button id="submit" class="button is-info is-primary">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </p>
+      <p class="mt-4 has-text-primary-dark" id="result">
+      </p>
+
+      <div class="columns mt-4">
+
+        <div class="column is-6">
+          <div class="card mt-3">
+            <div class="card-content">
+              <div class="title is-size-5 mb-3">
+                Model details
+              </div>
+              <div class="is-size-7">
+
+                The model is a <b>sequence-to-sequence model</b> with a <b>LSTMs</b> using <b>dot product</b> for attention.
+                Implemented using <a href="https://allennlp.org/">AllenNLP</a> with a custom metric for sequence accuracy.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-flex">
+          <div class="card mt-3">
+            <div class="card-content">
+              <div class="title is-size-5 mb-3">
+                Code
+              </div>
+              <div class="is-size-7">
+                <a href="https://github.com/mfa/allennlp-date2iso">https://github.com/mfa/allennlp-date2iso</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-flex">
+          <div class="card mt-3">
+            <div class="card-content">
+              <div class="title is-size-5 mb-3">
+                Versions
+              </div>
+              <div class="is-size-7 mb-3">
+                {{ version }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  </body>
+
+  <script type="text/javascript">
+function postForm(input_date) {
+  return fetch('/', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      i: input_date,
+    })
+  })
+    .then(
+      function(response) {
+        return response.json();
+      }
+    )
+    .catch(error => console.log(error));
+}
+
+function process() {
+  var input_date=document.getElementById('input_date').value;
+  if(input_date.length > 1){
+    document.getElementById("result").innerHTML = "processing ...";
+    postForm(input_date)
+      .then(data => {
+        document.getElementById("result").innerHTML = data["result"];
+        const url = location.protocol + '//' + location.host + location.pathname + "?i=" + input_date;
+        document.getElementById("link").innerHTML = 'Link to this result: <a href="' + url + '">' + url + '</a>';
+        window.history.pushState(null, null, url);
+      })
+      .catch(error => console.log(error));
+  }
+};
+
+window.onload = function () {
+  document.getElementById("examples").addEventListener("change", function() {
+    if(document.getElementById("examples").value === "Choose example"){return}
+    document.getElementById("input_date").value=document.getElementById("examples").value;
+  }, false);
+
+  document.getElementById("submit").onclick = function() {
+    event.preventDefault();
+    process();
+  };
+
+  {% if i %}
+  process();
+  {% endif %}
+};
+</script>
+
+</html>

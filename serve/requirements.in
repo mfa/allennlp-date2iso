@@ -1,0 +1,11 @@
+fastapi
+allennlp-models==2.7.0
+pytest
+requests
+jinja2
+
+# tmp. pin to fix dependency resolution
+datasets<1.12.0
+
+# pin must match the docker base image tag
+torch==1.9.1
