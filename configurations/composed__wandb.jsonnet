@@ -72,8 +72,8 @@ local hidden_size = std.parseJson(std.extVar('hidden_size'));
     "batch_size": 32
   },
   "trainer": {
-    "num_epochs": 100,
-    "patience": 30,
+    "num_epochs": 30,
+    "patience": 5,
     "validation_metric": "+sequence_accuracy",
     "optimizer": {
       "type": "adam",

@@ -1,0 +1,39 @@
+---
+name: date2iso-composed-optimizer
+project: date2iso
+program: allennlp
+method: grid
+command:
+  - ${program}
+  - "train-with-wandb"
+  - "configurations/composed__wandb.jsonnet"
+  - "--include-package=library"
+  - "--include-package=allennlp_models"
+  - ${args}
+metric:
+  name: validation/sequence_accuracy
+  goal: maximize
+parameters:
+  model.encoder.num_layers:
+    values:
+      - 1
+  env.hidden_size:
+    values:
+      - 70
+  env.embedding_dim:
+    values:
+      - 10
+  data_loader.batch_size:
+    values:
+      - 512
+  trainer.cuda_device:
+    value: 0
+  trainer.optimizer.lr:
+    values:
+      - 0.01
+      - 0.001
+      - 0.0001
+  trainer.optimizer.type:
+    values:
+      - adam
+      - adagrad
