@@ -40,7 +40,7 @@ FORMATS = [
 ]
 
 
-def create_date(locales):
+def create_date(locales, is_validation):
     """
     Creates some fake dates
     :returns: tuple containing
@@ -48,11 +48,16 @@ def create_date(locales):
               2. machine formatted string
               3. date object.
     """
-    # get dates from January 1, 1940 until today
-    dt = fake.date_time_ad(
-        start_datetime=datetime.datetime(1940, 1, 1, 0, 0),
-        end_datetime=datetime.datetime(2039, 12, 31, 23, 59),
-    ).date()
+    if is_validation:
+        start_date = datetime.datetime(1, 1, 1, 0, 0)
+        end_date = datetime.datetime(2100, 12, 31, 23, 59)
+    else:
+        # training-data
+        # get dates from January 1, 1940 until today
+        start_date = datetime.datetime(1940, 1, 1, 0, 0)
+        end_date = datetime.datetime(2039, 12, 31, 23, 59)
+
+    dt = fake.date_time_ad(start_datetime=start_date, end_datetime=end_date).date()
 
     # wrapping this in a try catch because
     # the locale 'vo' and format 'full' will fail
@@ -74,7 +79,7 @@ def create_date(locales):
     return human, machine, dt
 
 
-def create_dataset(dataset_name, n_examples, all_languages):
+def create_dataset(dataset_name, n_examples, all_languages, is_validation):
     locales = {}
     locales["important"] = ["en_US", "en_GB", "de_DE", "fr_FR", "es_ES"]
     locales["all"] = babel.localedata.locale_identifiers()
@@ -89,7 +94,7 @@ def create_dataset(dataset_name, n_examples, all_languages):
                 _locales = locales[random.choice(list(locales.keys()))]
             else:
                 _locales = locales["important"]
-            h, m, _ = create_date(_locales)
+            h, m, _ = create_date(_locales, is_validation)
             if h is not None:
                 writer.writerow({"input": h, "target": m})
 
@@ -114,12 +119,8 @@ def main(train_size, validation_size, all_languages, overwrite):
 
     click.echo("creating dataset")
 
-    create_dataset(train_filename, train_size, all_languages)
-    create_dataset(
-        validation_filename,
-        validation_size,
-        all_languages,
-    )
+    create_dataset(train_filename, train_size, all_languages, False)
+    create_dataset(validation_filename, validation_size, all_languages, True)
     click.echo("dataset created.")
 
 
