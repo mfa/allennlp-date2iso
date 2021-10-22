@@ -29,7 +29,7 @@ local hidden_size = std.parseJson(std.extVar('hidden_size'));
     }
   },
   "train_data_path": "data/training_500000.csv",
-  "validation_data_path": "data/validation_1000.csv",
+  "validation_data_path": "data/validation_10000.csv",
   "model": {
     "type": "composed_seq2seq",
     "source_text_embedder": {
