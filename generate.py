@@ -48,7 +48,10 @@ def create_date(locales, is_validation):
               2. machine formatted string
               3. date object.
     """
-    if is_validation:
+
+    # add more out-of-range dates to validation
+    weight = 0.5 if is_validation else 0.1
+    if random.random() < weight:
         start_date = datetime.datetime(1, 1, 1, 0, 0)
         end_date = datetime.datetime(2100, 12, 31, 23, 59)
     else:
