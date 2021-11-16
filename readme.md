@@ -21,7 +21,7 @@ python generate.py -t 500000 -v 10000 --all
 ### training
 
 ```
-allennlp train configurations/baseline.json -s output/`date +%s`
+allennlp train configurations/baseline.json -s output/`date +%s` --include-package library
 ```
 
 #### with wandb
