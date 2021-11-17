@@ -27,13 +27,9 @@ class MyMetric(Metric):
             metrics = {
                 "sequence_accuracy": 0.0,
             }
-        elif self._num_same_sequence == self._num_all_sequences:
-            metrics = {
-                "sequence_accuracy": 1.0,
-            }
         else:
             metrics = {
-                "sequence_accuracy": (self._num_same_sequence / self._num_all_sequences) / 2.0,
+                "sequence_accuracy": (self._num_same_sequence / self._num_all_sequences),
             }
         if reset:
             self.reset()
