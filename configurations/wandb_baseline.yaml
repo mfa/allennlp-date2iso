@@ -14,11 +14,11 @@ metric:
   name: best_validation_accuracy
   goal: maximize
 parameters:
-  model.seq2vec_encoder.num_layers:
+  model.encoder.num_layers:
     values:
       - 1
       - 2
-  model.seq2vec_encoder.hidden_size:
+  model.encoder.hidden_size:
     values:
       - 10
       - 50
