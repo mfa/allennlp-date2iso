@@ -1,4 +1,4 @@
-allennlp-models==2.7.0
+allennlp-models==2.8.0
 babel
 click
 Faker
